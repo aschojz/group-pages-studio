@@ -1,0 +1,29 @@
+{
+  "name": "extension-wne",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && node scripts/package.js",
+    "dev:demo": "vite --mode demo",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.2.0",
+    "@types/node": "^24.3.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "typescript": "^5.9.2",
+    "vite": "^7.3.6",
+    "vitest": "^4.1.11",
+    "vue-tsc": "^3.0.0"
+  },
+  "dependencies": {
+    "@churchtools/churchtools-client": "^1.4.0",
+    "markdown-it": "^15.0.2",
+    "vue": "^3.5.0",
+    "vue-router": "^4.5.0"
+  }
+}
