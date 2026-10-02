@@ -47,6 +47,8 @@ if (!fs.existsSync(distDir)) {
 }
 
 try {
+    // Replace the archive so old build assets cannot survive a repeated build.
+    if (fs.existsSync(archivePath)) fs.unlinkSync(archivePath);
     // Create ZIP archive using system zip command
     const zipCommand = `cd "${rootDir}" && zip -r "${archivePath}" dist/ -x "*.map" "*.DS_Store"`;
     execSync(zipCommand, { stdio: 'inherit' });

@@ -61,7 +61,6 @@ export const baseUrl = (
   import.meta.env.VITE_BASE_URL ||
   window.location.origin
 ).replace(/\/$/, "");
-export const isDemo = import.meta.env.VITE_DEMO === "true";
 
 export function parseGroupId(value: unknown): number | null {
   if (typeof value !== "string" || !/^[1-9]\d*$/.test(value)) return null;
@@ -167,15 +166,6 @@ export async function getGroupHomepage(
 ): Promise<GroupHomepage> {
   if (typeof hash !== "string" || !/^[a-zA-Z0-9_-]{1,128}$/.test(hash))
     throw new Error("Dieser Homepage-Link ist ungültig.");
-  if (isDemo && hash === "demo") {
-    const { demoGroups } = await import("../demo/groups");
-    return {
-      id: 0,
-      parentGroup: 0,
-      name: "Designvorschau",
-      groups: demoGroups,
-    };
-  }
   const stored = cache.get(hash);
   if (!force && stored && Date.now() - stored.time < 60000)
     return stored.homepage;

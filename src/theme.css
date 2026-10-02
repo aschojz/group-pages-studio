@@ -1,5 +1,5 @@
 /* WNE website palette: black/white base, blue accents, yellow for key actions. */
-:root {
+:host {
   --color-text: #ffffff;
   --color-page: #000000;
   --color-accent: #e3bc65;
@@ -47,5 +47,4 @@
   --color-loader-active: #6cc0e4;
   --color-notice-bg: #141c31;
   --color-panel-border: #ffffff33;
-  --color-demo-label-bg: #151d33;
 }

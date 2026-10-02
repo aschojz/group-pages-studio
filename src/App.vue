@@ -1,47 +1,59 @@
 <script setup lang="ts">
-import { computed } from "vue";
-import wneLogo from "./assets/wne-logo.svg";
+import { watchEffect } from "vue";
+import { config } from "./services/config";
 import { useRoute } from "vue-router";
 import UiButton from "./components/UiButton.vue";
-import { isDemo as demoEnabled } from "./services/publicGroups";
 const route = useRoute();
-const isDemo = computed(
-  () => demoEnabled && route.params.homepageHash === "demo",
-);
+watchEffect(() => {
+  if (route.name === "settings")
+    document.title = `Darstellung & Einstellungen · ${config.brand.name}`;
+  else if (route.path === "/")
+    document.title = `Gruppen · ${config.brand.name}`;
+});
 function skipToContent() {
-  document.getElementById("main")?.focus();
+  document
+    .getElementById("group-pages-studio-root")
+    ?.shadowRoot?.getElementById("main")
+    ?.focus();
 }
 </script>
 <template>
   <a class="skip-link" href="#main" @click.prevent="skipToContent"
     >Zum Inhalt</a
   >
-  <div v-if="isDemo" class="demo-banner">
-    Designvorschau · Beispieldaten, keine echten Teams oder Anmeldungen
-  </div>
   <header class="site-header">
     <RouterLink
       to="/"
       class="wordmark"
-      aria-label="Weihnachten neu erleben · Start"
+      :aria-label="`${config.brand.name} · Start`"
     >
       <img
-        :src="wneLogo"
-        alt="Weihnachten neu erleben"
+        v-if="config.brand.logoUrl"
+        :src="config.brand.logoUrl"
+        :alt="config.brand.name"
         width="1353"
         height="446"
       />
+      <span v-else>{{ config.brand.name }}</span>
     </RouterLink>
-    <span class="header-label">GEMEINSAM MÖGLICH MACHEN</span>
-    <UiButton secondary href="https://weihnachten-neu-erleben.de/"
-      >Zur WNE-Website</UiButton
+    <span v-if="config.brand.headerText" class="header-label">{{
+      config.brand.headerText
+    }}</span>
+    <UiButton
+      v-if="config.brand.websiteUrl"
+      secondary
+      :href="config.brand.websiteUrl"
+      >{{ config.brand.websiteLabel || "Zur Website" }}</UiButton
     >
   </header>
   <main id="main" tabindex="-1"><RouterView /></main>
   <footer class="site-footer">
-    <span>WEIHNACHTEN NEU ERLEBEN</span>
-    <p>Viele Menschen. Eine gemeinsame Geschichte.</p>
-    <a href="https://weihnachten-neu-erleben.de/impressum/">Impressum</a
-    ><a href="https://weihnachten-neu-erleben.de/datenschutz/">Datenschutz</a>
+    <span>{{ config.brand.name }}</span>
+    <p v-if="config.brand.footerText">{{ config.brand.footerText }}</p>
+    <a v-if="config.brand.imprintUrl" :href="config.brand.imprintUrl"
+      >Impressum</a
+    ><a v-if="config.brand.privacyUrl" :href="config.brand.privacyUrl"
+      >Datenschutz</a
+    >
   </footer>
 </template>

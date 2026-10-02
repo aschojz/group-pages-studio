@@ -1,15 +1,7 @@
 @import "./theme.css";
 
-@font-face {
-  font-family: "Montserrat";
-  src: url("/fonts/montserrat-variable.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-}
-
-:root {
-  font-family: "Montserrat", sans-serif;
+:host {
+  font-family: var(--font-family, "Montserrat", sans-serif);
   color: var(--color-text);
   background: var(--color-page);
   font-synthesis: none;
@@ -22,9 +14,6 @@
 }
 * {
   box-sizing: border-box;
-}
-body {
-  margin: 0;
 }
 #app {
   min-height: 100vh;
@@ -103,16 +92,8 @@ h3 {
 .skip-link:focus {
   top: 10px;
 }
-.demo-banner {
-  text-align: center;
-  background: var(--color-accent-soft);
-  color: var(--color-on-accent-soft);
-  padding: 7px 20px;
-  font-size: 0.75rem;
-  letter-spacing: 0.02em;
-}
 .site-header {
-  height: 80px;
+  height: var(--header-height, 80px);
   padding: 0 6%;
   display: flex;
   align-items: center;
@@ -126,8 +107,9 @@ h3 {
   flex-shrink: 0;
 }
 .wordmark img {
+  filter: var(--logo-filter, none);
   display: block;
-  width: 180px;
+  width: var(--logo-width, 180px);
   height: auto;
 }
 .header-label {
@@ -152,7 +134,7 @@ h3 {
   overflow: hidden;
 }
 .hero-inner {
-  max-width: 1440px;
+  max-width: var(--content-width, 1440px);
   margin: auto;
   padding: 24px 6% 70px;
 }
@@ -253,9 +235,9 @@ h3 {
 }
 .groups-section,
 .team-section {
-  max-width: 1440px;
+  max-width: var(--content-width, 1440px);
   margin: auto;
-  padding: 65px 6%;
+  padding: var(--section-spacing, 65px) 6%;
 }
 .section-top {
   display: flex;
@@ -432,9 +414,9 @@ h3 {
   gap: 24px;
   background: var(--gold);
   color: var(--color-on-accent);
-  padding: 10px 24px;
-  border: 2px solid var(--gold);
-  border-radius: 0;
+  padding: var(--button-padding-y, 10px) 24px;
+  border: var(--button-border-width, 2px) solid var(--gold);
+  border-radius: var(--component-radius, 0px);
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 600;
@@ -500,7 +482,7 @@ input {
   padding: 12px 15px;
   min-width: 0;
   border: 1px solid var(--color-input-border);
-  border-radius: 0;
+  border-radius: var(--component-radius, 0px);
   color: var(--color-input-ink);
   background: var(--color-surface);
 }
@@ -593,13 +575,6 @@ input {
 .signup-panel .button {
   margin-top: 25px;
 }
-.demo-label {
-  display: inline-block;
-  margin-top: 20px;
-  padding: 6px 12px;
-  background: var(--color-demo-label-bg);
-  font-size: 0.75rem;
-}
 .back-row {
   padding: 0 6% 35px;
   font-size: 0.8rem;
@@ -637,7 +612,7 @@ input {
 }
 @media (max-width: 760px) {
   .site-header {
-    height: 72px;
+    height: min(var(--header-height, 80px), 72px);
   }
   .header-label {
     display: none;
@@ -647,7 +622,8 @@ input {
     padding: 8px 14px;
   }
   .wordmark img {
-    width: 140px;
+    filter: var(--logo-filter, none);
+    width: min(var(--logo-width, 180px), 140px);
   }
   .hero-inner {
     padding-bottom: 45px;
@@ -709,9 +685,6 @@ input {
   }
   .closing-note {
     margin-top: 5px;
-  }
-  .demo-banner {
-    font-size: 0.65rem;
   }
   .signup-panel {
     align-self: start;
@@ -1052,15 +1025,15 @@ input {
   z-index: -1;
   background: linear-gradient(
     180deg,
-    #00000026 0%,
-    #00000033 35%,
-    #000000a6 70%,
+    var(--hero-fade-top, #00000026) 0%,
+    var(--hero-fade-middle, #00000033) 35%,
+    var(--hero-fade-bottom, #000000a6) 70%,
     var(--color-page) 100%
   );
 }
 .page-hero-content {
   width: 100%;
-  max-width: 1440px;
+  max-width: var(--content-width, 1440px);
   margin: 0 auto;
   padding: 110px 6% 20px;
 }
@@ -1099,9 +1072,9 @@ input {
 
 /* Shared form controls match the WNE newsletter's square, transparent fields. */
 .signup-section {
-  max-width: 1440px;
+  max-width: var(--content-width, 1440px);
   margin: 0 auto;
-  padding: 36px 6% 65px;
+  padding: 36px 6% var(--section-spacing, 65px);
 }
 .signup-section h2,
 .signup-feedback h2 {
@@ -1138,12 +1111,12 @@ input {
 .signup-field select {
   width: 100%;
   padding: 10px 20px;
-  border: 1px solid #dedede;
-  border-radius: 0;
+  border: 1px solid var(--color-input-border);
+  border-radius: var(--component-radius, 0px);
   background: transparent;
   color: var(--color-text);
   font: inherit;
-  color-scheme: dark;
+  color-scheme: var(--form-color-scheme, dark);
 }
 .signup-field select option {
   background: var(--color-navy);
@@ -1225,4 +1198,155 @@ input {
   width: 24px;
   height: 24px;
   margin-bottom: 20px;
+}
+
+.settings-page {
+  max-width: var(--content-width, 1440px);
+  margin: 0 auto;
+  padding: 50px 6% var(--section-spacing, 65px);
+}
+.settings-intro {
+  margin-bottom: 36px;
+}
+.settings-intro h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 20px;
+}
+.settings-intro p {
+  max-width: 760px;
+  color: var(--color-text-muted);
+}
+.settings-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 50px;
+  align-items: start;
+}
+.settings-form fieldset {
+  margin-bottom: 36px;
+}
+.settings-form legend {
+  font-size: 1.4rem;
+  font-weight: 600;
+  padding: 0 0 20px;
+}
+.settings-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 20px 0;
+}
+.settings-notice {
+  padding: 20px;
+  margin-bottom: 24px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+.settings-notice .button {
+  margin-top: 16px;
+}
+.color-control {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 14px;
+}
+.color-control input[type="color"] {
+  padding: 4px;
+  height: 48px;
+}
+.settings-preview {
+  position: sticky;
+  top: 24px;
+}
+.settings-preview > h2 {
+  font-size: 1.3rem;
+  margin-bottom: 20px;
+}
+.preview-frame {
+  font-family: var(--font-family);
+  border: 1px solid var(--color-border);
+  --gold: var(--color-accent);
+  --muted: var(--color-text-muted);
+}
+.preview-header {
+  min-height: var(--header-height);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+.preview-header img {
+  filter: var(--logo-filter, none);
+  width: var(--logo-width);
+  max-width: 100%;
+  height: auto;
+}
+.preview-header small {
+  color: var(--color-text-muted);
+  font-size: 0.6rem;
+}
+.preview-content {
+  padding: 30px 24px;
+}
+.preview-content h3 {
+  margin: 12px 0 18px;
+  font-weight: 600;
+}
+.preview-content p {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+.preview-accent {
+  color: var(--color-accent-ink);
+  font-size: 0.8rem;
+}
+.preview-card {
+  background: var(--color-surface);
+  padding: 24px;
+  margin: 24px 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--component-radius);
+}
+.preview-card h4 {
+  margin: 0 0 12px;
+}
+.preview-footer {
+  padding: 24px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+.preview-footer strong {
+  display: block;
+  margin-bottom: 12px;
+}
+.settings-entry-link {
+  display: inline-block;
+  font-size: 0.8rem;
+  margin-top: 36px;
+  text-underline-offset: 5px;
+}
+@media (max-width: 1000px) {
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+  .settings-preview {
+    position: static;
+    grid-row: 1;
+  }
+}
+
+.group-card,
+.group-list-item,
+.signup-panel {
+  border-radius: var(--component-radius, 0px);
+}
+.group-card {
+  overflow: hidden;
+}
+.settings-login {
+  max-width: 540px;
+  margin-top: 32px;
 }

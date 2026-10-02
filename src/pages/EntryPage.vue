@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import UiButton from "../components/UiButton.vue";
-import { isDemo, parseGroupId } from "../services/publicGroups";
+import { parseGroupId } from "../services/publicGroups";
 const router = useRouter();
 const id = ref("");
 const hash = ref("");
@@ -11,7 +11,7 @@ function open() {
   const parsed = parseGroupId(id.value.trim());
   if (!parsed || !/^[a-zA-Z0-9_-]{1,128}$/.test(hash.value.trim())) {
     error.value =
-      "Bitte gib den Homepage-Hash und eine gültige Gruppen-ID ein.";
+      "Bitte gib die Homepage-Kennung und eine gültige Gruppen-ID ein.";
     return;
   }
   router.push({
@@ -22,17 +22,15 @@ function open() {
 </script>
 <template>
   <section class="entry hero">
-    <div class="eyebrow"><span></span> DEIN EINSATZ. UNSER WEIHNACHTEN.</div>
-    <h1>Gemeinsam wird<br /><em>mehr daraus.</em></h1>
+    <div class="eyebrow"><span></span> GRUPPEN ENTDECKEN</div>
+    <h1>Deine Gruppen<br /><em>auf einen Blick.</em></h1>
     <p>
-      Öffne deine Gruppen-Homepage über ihren Link. Jeder Bereich führt dich
-      Schritt für Schritt zu den Teams, die dazugehören.
+      Öffne eine Gruppen-Homepage über ihren Link oder gib die Kennung und
+      Gruppen-ID unten ein. Dort findest du die Gruppe, ihre Untergruppen und
+      Informationen zur Anmeldung.
     </p>
-    <UiButton v-if="isDemo" to="/demo/100"
-      >Beispiel-Homepage entdecken</UiButton
-    >
     <form class="entry-form" @submit.prevent="open">
-      <label for="homepage-hash">Homepage-Hash</label>
+      <label for="homepage-hash">Homepage-Kennung</label>
       <input id="homepage-hash" v-model="hash" autocomplete="off" required />
       <label for="group-id">Gruppen-ID</label>
       <div>
@@ -47,5 +45,8 @@ function open() {
       </div>
       <p id="entry-error" role="alert">{{ error }}</p>
     </form>
+    <RouterLink class="settings-entry-link" to="/admin/settings"
+      >Darstellung & Einstellungen</RouterLink
+    >
   </section>
 </template>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { config } from "../services/config";
 import PageHero from "../components/PageHero.vue";
 import GroupCard from "../components/GroupCard.vue";
 import GroupDetails from "../components/GroupDetails.vue";
@@ -13,15 +14,11 @@ import {
   getGroupHomepage,
   resolveGroupPath,
   visibleChildren,
-  isDemo as demoEnabled,
   inheritedGroupImage,
   type PublicGroup,
 } from "../services/publicGroups";
 
 const route = useRoute();
-const isDemo = computed(
-  () => demoEnabled && route.params.homepageHash === "demo",
-);
 const hierarchy = ref(new Map<number, PublicGroup>());
 const group = ref<PublicGroup>();
 const children = ref<PublicGroup[]>([]);
@@ -103,14 +100,14 @@ watch(
         (child) => !trail.some((parent) => parent.id === child.id),
       );
       ancestors.value = trail;
-      document.title = `${loaded.name} · Weihnachten neu erleben`;
+      document.title = `${loaded.name} · ${config.brand.name}`;
     } catch (cause) {
       if (controller.signal.aborted) return;
       error.value =
         cause instanceof Error
           ? cause.message
           : "Die Gruppe konnte nicht geladen werden.";
-      document.title = "Gruppe nicht verfügbar · Weihnachten neu erleben";
+      document.title = `Gruppe nicht verfügbar · ${config.brand.name}`;
     } finally {
       if (!controller.signal.aborted) {
         loading.value = false;
@@ -122,10 +119,10 @@ watch(
   { immediate: true },
 );
 watch(
-  () => [route.name, group.value?.name],
+  () => [route.name, group.value?.name, config.brand.name],
   () => {
     if (group.value)
-      document.title = `${route.name === "signup" ? "Anmeldung · " : ""}${group.value.name} · Weihnachten neu erleben`;
+      document.title = `${route.name === "signup" ? "Anmeldung · " : ""}${group.value.name} · ${config.brand.name}`;
   },
 );
 </script>
@@ -242,14 +239,10 @@ watch(
         </div>
         <aside class="signup-panel">
           <h3>{{ group.signUpHeadline || "Anmeldung" }}</h3>
-          <template v-if="group.canSignUp">
-            <p v-if="isDemo">In dieser Vorschau ist keine Anmeldung möglich.</p>
-            <UiButton
-              v-if="!isDemo"
-              :to="{ name: 'signup', params: route.params }"
-              >Zur Anmeldung</UiButton
-            >
-            <span v-else class="demo-label">Beispielteam</span></template
+          <UiButton
+            v-if="group.canSignUp"
+            :to="{ name: 'signup', params: route.params }"
+            >Zur Anmeldung</UiButton
           >
           <p v-else>
             Für dieses Team ist aktuell keine öffentliche Anmeldung möglich.

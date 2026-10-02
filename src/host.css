@@ -1,0 +1,26 @@
+/* Only adjust the ChurchTools shell while this extension is mounted. */
+body.group-pages-studio-active {
+  margin: 0 !important;
+  padding: 0 !important;
+  --menu-height: 0px !important;
+}
+body.group-pages-studio-active #navigation,
+body.group-pages-studio-active #menu1,
+body.group-pages-studio-active #footer {
+  display: none !important;
+}
+body.group-pages-studio-active #page,
+body.group-pages-studio-active #content {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  background: transparent !important;
+}
+body.group-pages-studio-active #group-pages-studio-root {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}

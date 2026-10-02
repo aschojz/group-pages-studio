@@ -1,14 +1,13 @@
 {
-  "name": "extension-wne",
+  "name": "group-pages-studio",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.2",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
     "deploy": "npm run build && node scripts/package.js",
-    "dev:demo": "vite --mode demo",
     "test": "vitest run"
   },
   "devDependencies": {

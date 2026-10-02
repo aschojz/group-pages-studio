@@ -5,10 +5,20 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
   return {
     plugins: [vue()],
-    base: `/ccm/${env.VITE_KEY || "wne"}/`,
+    base: `/ccm/${env.VITE_KEY || "group-pages-studio"}/`,
     server: {
       proxy: env.VITE_BASE_URL
-        ? { "/api": { target: env.VITE_BASE_URL, changeOrigin: true } }
+        ? {
+            "/logo": {
+              target: env.VITE_BASE_URL,
+              changeOrigin: true,
+            },
+            "/api": {
+              target: env.VITE_BASE_URL,
+              changeOrigin: true,
+              cookieDomainRewrite: "",
+            },
+          }
         : undefined,
     },
   };

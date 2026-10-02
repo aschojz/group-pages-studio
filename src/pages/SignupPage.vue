@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { config } from "../services/config";
 import UiButton from "../components/UiButton.vue";
 import SignupFieldInput from "../components/SignupField.vue";
 import {
   buildHierarchy,
   getGroupHomepage,
   resolveGroupPath,
-  isDemo,
   type PublicGroup,
 } from "../services/publicGroups";
 import {
@@ -75,7 +75,7 @@ const action = computed(() =>
       : "Anmeldung absenden",
 );
 function resumeUrl() {
-  return `${window.location.origin}${window.location.pathname}${router.resolve({ name: "signup", params: route.params }).href}?token=$token`;
+  return `${window.location.origin}${router.resolve({ name: "signup", params: route.params }).href}?token=$token`;
 }
 async function readForm(signupToken: string, signal: AbortSignal) {
   const data = await loadSignupForm(group.value!.id, signupToken, signal);
@@ -184,11 +184,7 @@ watch(
         if (controller.signal.aborted) return;
         group.value = path[path.length - 1]!;
       }
-      document.title = `Anmeldung · ${group.value.name} · Weihnachten neu erleben`;
-      if (isDemo && route.params.homepageHash === "demo")
-        throw new Error(
-          "In der Designvorschau ist keine echte Anmeldung möglich.",
-        );
+      document.title = `Anmeldung · ${group.value.name} · ${config.brand.name}`;
       if (!signupStatus(group.value).open) return;
       const existingToken =
         typeof route.query.token === "string" ? route.query.token : undefined;
